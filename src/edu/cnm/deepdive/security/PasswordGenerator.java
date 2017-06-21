@@ -87,7 +87,7 @@ public int getMaxLength() {
 }
 /**
  * 
- * @param  maximum length of the password is selected.
+ * @param maxLength  max length of the password is selected.
  */
 protected void setMaxLength(int maxLength) {
   this.maxLength = maxLength;
@@ -99,7 +99,7 @@ public int getMinLength() {
   return minLength;
 }
 /**
- * @param the minimum Length of password selected.
+ * @param minLength the minimum Length of password selected.
  */
 protected void setMinLength(int minLength) {
   this.minLength = minLength;
