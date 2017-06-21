@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 
@@ -45,6 +44,7 @@ public class Wordlist {
     } catch (NumberFormatException ex) {
       ex.printStackTrace();
       System.out.println(errorMessage);
+      System.out.println(usageMessage);
       System.exit(1);
     } catch (IllegalArgumentException ex) {
       System.out.println(errorMessage);
