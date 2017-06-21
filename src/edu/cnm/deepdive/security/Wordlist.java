@@ -9,18 +9,27 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 
+/**
+ * Wordlist set for passpharse and passwords.
+ * @author Yolanda Philgreen
+ *
+ */
 public class Wordlist {
 
   private static final int RECOMMENDED_PHRASE_LENGTH = 5;
-  public static final String WORD_LIST_FILE = "resources/eff_large_wordlist.txt";
 
-
+  public static final String WORD_LIST_FILE = "resources/eff_large_wordlist .txt";
   private static final String PROPERTIES_FILE = "resources/text.properties";
 
   private static String usageMessage;
   private static String errorMessage;
   private static String warningMessage;
 
+  /**
+   * command line to open wordlist using random and phrase specific details.
+   * @param args 
+   * 
+   */
   public static void main(String[] args) {
     try {
       loadResources();
@@ -30,8 +39,8 @@ public class Wordlist {
       } else if (phraseLength < RECOMMENDED_PHRASE_LENGTH) {
         System.out.println(warningMessage);
       }
-      String[] wordList = loadWordList(WORD_LIST_FILE); 
-      String[] selectedWords = getRandomWords (phraseLength, wordList);
+      String[] wordList = loadWordList(WORD_LIST_FILE);
+      String[] selectedWords = getRandomWords(phraseLength, wordList);
       System.out.println(getJoinedString(selectedWords));
     } catch (NumberFormatException ex) {
       ex.printStackTrace();
@@ -58,37 +67,44 @@ public class Wordlist {
     }
   }
 
-  private static String[] loadWordList(String listPath) 
-      throws IOException {
-    try (BufferedReader reader 
-        = new BufferedReader (new InputStreamReader (Wordlist.class.getClassLoader().getResourceAsStream(listPath)))){
-     ArrayList<String> words = new ArrayList <>();
-      for (String line = reader.readLine(); line !=null; line = reader.readLine()){
-      words.add(line.split("\\s+")[1]); 
-     }
-        return words.toArray(new String[] {});
-        
+  private static String[] loadWordList(String listPath) throws IOException {
+    try (BufferedReader reader = new BufferedReader(
+        new InputStreamReader(Wordlist.class.getClassLoader().getResourceAsStream(listPath)))) {
+      ArrayList<String> words = new ArrayList<>();
+      for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+        words.add(line.split("\\s+")[1]);
+      }
+      return words.toArray(new String[] {});
+
     }
   }
-  public static String[] getRandomWords(int numWords, String[] wordlist){
+
+  /**
+   * 
+   * @param numWords Selection of wordlist amount within random field
+   * @param wordlist 
+   * @return the streamlined password from wordlist
+   */
+  public static String[] getRandomWords(int numWords, String[] wordlist) {
     String[] selection = new String[numWords];
     Random rng = new Random();
-    for (int i = 0; i < selection.length; i++){
+    for (int i = 0; i < selection.length; i++) {
       int selectedPosition = rng.nextInt(wordlist.length);
       selection[i] = wordlist[selectedPosition];
     }
     return selection;
-    
+
   }
-  private static String getJoinedString(String[] source){
+
+  private static String getJoinedString(String[] source) {
     StringBuilder builder = new StringBuilder();
-    for (String item : source){
+    for (String item : source) {
       builder.append(item);
-      builder.append(" "); 
+      builder.append(" ");
     }
     return builder.toString().trim();
   }
-  
-  
+
+
 }
 

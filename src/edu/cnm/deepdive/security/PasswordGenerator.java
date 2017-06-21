@@ -39,18 +39,33 @@ public class PasswordGenerator {
   public static void main(String[] args) {
     
   }
+  /**
+   * 
+   */
  public PasswordGenerator() {
-   System.out.println("In default constructor");
  }
-  
+ /**
+  * Length of password selection using a psudo password generation. 
+  * @param minLength
+  * @param maxLength
+  */
  public PasswordGenerator (int minLength, int maxLength) {
    this();
-   System.out.println("In overloaded constructor");
    this.minLength = minLength;
    this.maxLength = maxLength;
    
  }
- 
+ /**
+  * 
+  * 
+  * @param minLength minimum length of password to be generated.
+  * @param maxLength maximum length of password to be generated.
+  * @param includeUpperCase  Case sensitive password to be generated with use of Upper case.
+  * @param includeLowerCase  Case sensitive password to be generated with use of Lower case.
+  * @param includeNumbers  Case sensitive password to be generated with use of Numbers.
+  * @param includePunctuation  Case sensitive password to be generated with use of Punctuation.
+  * @param excludeAmbiguous  Case sensitive password to be generated with no use of Ambiguous.
+  */
  public PasswordGenerator(int minLength, int maxLength, boolean includeUpperCase,
      boolean includeLowerCase, boolean includeNumbers, boolean includePunctuation,
      boolean excludeAmbiguous) {
@@ -64,24 +79,27 @@ public class PasswordGenerator {
  }
  
 /**
- * 
+ * maximum length of the password is selected.
  * @return the maxLength
  */
 public int getMaxLength() {
   return maxLength;
 }
-
+/**
+ * 
+ * @param maxLength maximum length of the password is selected.
+ */
 protected void setMaxLength(int maxLength) {
   this.maxLength = maxLength;
 }
 /**
- * @return the minLength
+ * @return the minLength is returned.
  */
 public int getMinLength() {
   return minLength;
 }
 /**
- * @param minLength the minLength to set
+ * @param the minimum Length to set within the pool.
  */
 protected void setMinLength(int minLength) {
   this.minLength = minLength;
@@ -105,6 +123,10 @@ private void setupPool() {
    pool = work.toCharArray();
   }
 }
+/**
+ * 
+ * @return the maximum length of the password is set.
+ */
 public String generate() {
   setupPool();
   int passwordLength = minLength + rng.nextInt(maxLength - minLength +1);
