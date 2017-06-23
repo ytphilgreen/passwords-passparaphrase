@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.security;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 /**
  * Interface of the cryprographic secure password
@@ -12,30 +13,15 @@ public class SecurePasswordGenerator extends PasswordGenerator {
  */
   public SecurePasswordGenerator() {
     super();
-    rng = new SecureRandom();
   }
-/**
- * 
- * @param minLength minimum length to be generated for password.
- * @param maxLength maxinum length to be generated for password.
- */
-  public SecurePasswordGenerator(int minLength, int maxLength) {
-    super(minLength, maxLength);
+@Override
+  protected void setupRng()  {
+  try {
+    setRng(SecureRandom.getInstanceStrong());
+  } catch (NoSuchAlgorithmException ex) {
+    throw new RuntimeException(ex);
+    
   }
-/**
- * security parameters set.
- * @param minLength minLength minimum length to be generated for password.
- * @param maxLength maxLength maximum length to be generated for password.
- * @param includeUpperCase Case sensitive password to be generated with use of Upper case.
- * @param includeLowerCase Case sensitive password to be generated with use of Lower case.
- * @param includeNumbers Case sensitive password to be generated with use of Number.
- * @param includePunctuation Case sensitive password to be generated with use of Punctuation.
- * @param excludeAmbiguous Case sensitive password to be generated with non use of Ambiguous.
- */
-  public SecurePasswordGenerator(int minLength, int maxLength, boolean includeUpperCase,
-      boolean includeLowerCase, boolean includeNumbers, boolean includePunctuation,
-      boolean excludeAmbiguous) {
-    super(minLength, maxLength, includeUpperCase, includeLowerCase, includeNumbers,
-        includePunctuation, excludeAmbiguous);
+  
   }
 }

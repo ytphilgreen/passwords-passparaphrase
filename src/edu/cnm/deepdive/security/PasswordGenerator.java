@@ -20,65 +20,27 @@ public class PasswordGenerator {
   private static final String NUMBERS = "0123456789";
   private static final String PUNCTUATION = "!@#$%&*,.";
   private static final String AMBIGUOUS = "[Ol]";
+  
+  
   private char[] pool = null;
   private int minLength =6;
   private int maxLength =12;
-  protected Random rng;
-  private boolean includeUpperCase = true;
-  private boolean includeLowerCase = true;
-  private boolean includeNumbers = true;
-  private boolean includePunctuation = false;
-  private boolean excludeAmbiguous = true;
+  private Random rng = null;
+  private boolean upperCaseInclude = true;
+  private boolean lowerCaseInclude = true;
+  private boolean numbersInclude = true;
+  private boolean punctuationInclude = true;
+  private boolean ambiguousExclude = true;
+  private String delimiter = "";
   
   
-/**
- * Test rig for generating passwords.
- * 
- * @param args Command-line parameters for password generation options.
- */
-  public static void main(String[] args) {
-    
-  }
   /**
    * 
    */
  public PasswordGenerator() {
  }
- /**
-  * Length of password selection using a psudo password generation. 
-  * @param minLength
-  * @param maxLength
-  */
- public PasswordGenerator (int minLength, int maxLength) {
-   this();
-   this.minLength = minLength;
-   this.maxLength = maxLength;
    
- }
  /**
-  * 
-  * 
-  * @param minLength minimum length of password to be generated.
-  * @param maxLength maximum length of password to be generated.
-  * @param includeUpperCase  Case sensitive password to be generated with use of Upper case.
-  * @param includeLowerCase  Case sensitive password to be generated with use of Lower case.
-  * @param includeNumbers  Case sensitive password to be generated with use of Numbers.
-  * @param includePunctuation  Case sensitive password to be generated with use of Punctuation.
-  * @param excludeAmbiguous  Case sensitive password to be generated with no use of Ambiguous.
-  */
- public PasswordGenerator(int minLength, int maxLength, boolean includeUpperCase,
-     boolean includeLowerCase, boolean includeNumbers, boolean includePunctuation,
-     boolean excludeAmbiguous) {
-   System.out.println("In another overloaded constructor");
-   this.includeUpperCase = includeUpperCase;
-   this.includeLowerCase = includeLowerCase;
-   this.includeNumbers = includeNumbers;
-   this.includePunctuation = includePunctuation;
-   this.excludeAmbiguous = excludeAmbiguous;
-       
- }
- 
-/**
  * maximum length of the password is selected.
  * @return the maxLength
  */
@@ -107,20 +69,28 @@ protected void setMinLength(int minLength) {
 private void setupPool() {
   if (pool == null) {
    StringBuilder builder = new StringBuilder();
-   if (includeLowerCase) {
+   if (isLowerCaseInclude()) {
      builder.append(LOWERCASE);
    }
-   if (includeUpperCase) {
+   if (isUpperCaseInclude()) {
      builder.append(NUMBERS);
    }
-   if (includePunctuation) {
+   if (isPunctuationInclude()) {
      builder.append(PUNCTUATION);
    }
    String work = builder.toString();
-   if (excludeAmbiguous) {
+   if (isAmbiguousExclude()) {
     work.replaceAll(AMBIGUOUS, "");
    }
    pool = work.toCharArray();
+  }
+}
+/**
+ * 
+ */
+protected void setupRng() {
+  if (rng==null) {
+    rng = new Random();
   }
 }
 /**
@@ -129,13 +99,98 @@ private void setupPool() {
  */
 public String generate() {
   setupPool();
-  int passwordLength = minLength + rng.nextInt(maxLength - minLength +1);
+  setupRng();
+  int passwordLength = minLength + getRng().nextInt(maxLength - minLength +1);
   StringBuilder builder = new StringBuilder();
   for (int i = 0; i <passwordLength; i++) {
-    char selection = pool[rng.nextInt(pool.length)];
+    char selection = pool[getRng().nextInt(pool.length)];
     builder.append(selection);
   }
   return builder.toString();
+}
+/**
+ * @return the upperCaseInclude
+ */
+public boolean isUpperCaseInclude() {
+  return upperCaseInclude;
+}
+/**
+ * @param upperCaseInclude the upperCaseInclude to set
+ */
+public void setUpperCaseInclude(boolean upperCaseInclude) {
+  this.upperCaseInclude = upperCaseInclude;
+}
+/**
+ * @return the lowerCaseInclude
+ */
+public boolean isLowerCaseInclude() {
+  return lowerCaseInclude;
+}
+/**
+ * @param lowerCaseInclude the lowerCaseInclude to set
+ */
+public void setLowerCaseInclude(boolean lowerCaseInclude) {
+  this.lowerCaseInclude = lowerCaseInclude;
+}
+/**
+ * @return the punctuationInclude
+ */
+public boolean isPunctuationInclude() {
+  return punctuationInclude;
+}
+/**
+ * @param punctuationInclude the punctuationInclude to set
+ */
+public void setPunctuationInclude(boolean punctuationInclude) {
+  this.punctuationInclude = punctuationInclude;
+}
+/**
+ * @return the numbersInclude
+ */
+public boolean isNumbersInclude() {
+  return numbersInclude;
+}
+/**
+ * @param numbersInclude the numbersInclude to set
+ */
+public void setNumbersInclude(boolean numbersInclude) {
+  this.numbersInclude = numbersInclude;
+}
+/**
+ * @return the ambiguousExclude
+ */
+public boolean isAmbiguousExclude() {
+  return ambiguousExclude;
+}
+/**
+ * @param ambiguousExclude the ambiguousExclude to set
+ */
+public void setAmbiguousExclude(boolean ambiguousExclude) {
+  this.ambiguousExclude = ambiguousExclude;
+}
+/**
+ * @return the delimiter
+ */
+public String getDelimiter() {
+  return delimiter;
+}
+/**
+ * @param delimiter the delimiter to set
+ */
+public void setDelimiter(String delimiter) {
+  this.delimiter = delimiter;
+}
+/**
+ * @return the rng
+ */
+protected Random getRng() {
+  return rng;
+}
+/**
+ * @param rng the rng to set
+ */
+protected void setRng(Random rng) {
+  this.rng = rng;
 }
 
 }

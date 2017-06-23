@@ -56,16 +56,17 @@ public class Guard {
                                              .numberOfArgs(1)
                                              .type(String.class)
                                              .build();
-  Options opts =new Options().addOption(lengthOption)
-                             .addOption(delimiterOption)
-                             .addOption(wordListOption);
+  Option modeOption = Option.builder("m").longOpt("password-mode")
+                                         .hasArg(false)
+                                         .build();
+                             
 Option excludeUpperOption = Option.builder("b").longOpt("exclude-upper")
                                                .hasArg(false)
                                                .build();
-Option exludeLowerOption = Option.builder("s").longOpt("exclude-lower")
+Option excludeLowerOption = Option.builder("s").longOpt("exclude-lower")
                                               .hasArg(false)
                                               .build();
-Option exludeDigitsOption = Option.builder("n").longOpt("exclude-digits")
+Option excludeDigitsOption = Option.builder("n").longOpt("exclude-digits")
                                                .hasArg(false)
                                                .build();
 Option excludePunctuationOption = Option.builder("p").longOpt("exclude-punctuation")
@@ -74,6 +75,17 @@ Option excludePunctuationOption = Option.builder("p").longOpt("exclude-punctuati
 Option includeAmbiguousOption = Option.builder("a").longOpt("include-ambiguous")
                                                    .hasArg(false)
                                                    .build();
+
+Options opts =new Options().addOption(lengthOption)
+.addOption(delimiterOption)
+.addOption(wordListOption)
+.addOption(modeOption)
+.addOption(excludeUpperOption)
+.addOption(excludeLowerOption)
+.addOption(excludeDigitsOption)
+.addOption(excludePunctuationOption)
+.addOption(includeAmbiguousOption);
+
   DefaultParser parser = new DefaultParser();
   HashMap <String, Object>map = new HashMap<>();
   CommandLine cmdLine = parser.parse(opts, args);
@@ -81,7 +93,6 @@ Option includeAmbiguousOption = Option.builder("a").longOpt("include-ambiguous")
     String opt = option.getOpt();
     map.put(opt, cmdLine.getParsedOptionValue(opt));
     }
-  
   return map;
     } catch (ParseException ex) {
       return null; //TODO Handle this exception with a usage display. 
@@ -90,10 +101,16 @@ Option includeAmbiguousOption = Option.builder("a").longOpt("include-ambiguous")
   }
 
   static String generateArtifact(HashMap<String, Object> map) {
-    return null; // FIXME
+    if(map.containsKey("m")) {
+      PasswordGenerator gen = new SecurePasswordGenerator();
+      //TODO Set fields for all specified options. 
+      return gen.generate();
+    }
+    return null; 
     
   }
   static void emitArtifact(String artifact) {
+    System.out.println(artifact);
     
   }
 }
