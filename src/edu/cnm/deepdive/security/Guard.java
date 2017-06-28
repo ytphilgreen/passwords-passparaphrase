@@ -37,26 +37,26 @@ public class Guard {
   }
   static HashMap<String, Object> getOptions(String[] args){
     try {
-      Option lengthOption = Option.builder("L").argName("length")
+Option lengthOption = Option.builder("L").argName("length")
                                                .hasArg()
                                                .longOpt("length")
                                                .numberOfArgs(1)
                                                .type(Number.class)
                                                .build();
-  Option delimiterOption = Option.builder("d").argName("delimiter")
+Option delimiterOption = Option.builder("d").argName("delimiter")
                                               .hasArg()
                                               .longOpt("delimiter")
                                               .numberOfArgs(1)
                                               .optionalArg(true)
                                               .type(String.class)
                                               .build();
-  Option wordListOption = Option.builder("w").argName("path-to-list-file")
+Option wordListOption = Option.builder("w").argName("path-to-list-file")
                                              .hasArg()
                                              .longOpt("word-list")
                                              .numberOfArgs(1)
                                              .type(String.class)
                                              .build();
-  Option modeOption = Option.builder("m").longOpt("password-mode")
+Option modeOption = Option.builder("m").longOpt("password-mode")
                                          .hasArg(false)
                                          .build();
                              
