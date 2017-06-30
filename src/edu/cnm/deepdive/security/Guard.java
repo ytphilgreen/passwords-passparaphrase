@@ -28,8 +28,11 @@ public class Guard {
    */
   public static void main(String[] args) {
   HashMap<String, Object> map = Options.getOptions(args);
-  String artifact = generateArtifact(map);
-  emitArtifact(artifact);
+  if (map!= null) {
+    String artifact = generateArtifact(map);
+    emitArtifact(artifact);
+     }
+  
   }
  
   static String generateArtifact(HashMap<String, Object> map) {
