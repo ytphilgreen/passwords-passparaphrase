@@ -4,6 +4,7 @@
 package edu.cnm.deepdive.security;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -23,10 +24,27 @@ public class Options {
   
   public static final String JAR_FILE_NAME = "gaurd.jar";
   
-  private static final String MISSING_ARGUMENT_KEY = "error.missingargument.message";
+  private static final String INVAILD_DELIMITERS = "[<>&|*?^]";
+  
   private static final String OPTIONS_DESCRIPTION_BUNDLE = "resources/options";
   private static final String MESSAGES_BUNDLE = "resources/messages";
+  
+  private static final String PASSWORD_EXTREME_LENGTH_WARNING = "pp.warning.extremelength.message";
+  private static final String PASSPHRASE_EXTREME_LENGTH_WARNING = "pp.warning.extremelength.message";
+  private static final String PASSPHARSE_LENGTH_WARNING = "pp.warning.length.message";
+  private static final String PASSWORD_LENGTH_WARNING = "pw.warning.length.message";
+  private static final String OPTIONS_CONFLICT_WARNING = "opts.conflict.warning.message";
+  private static final String LENGTH_ERROR = "error.length.message";
+  private static final String RESERVED_CHARACTER_ERROR = "pp.error.reserved.message";
+  
+
   private static final String FATAL_MESSAGE = "not able to load messages bundle";
+  private static final String BAD_OPTION_KEY = "pp.error.option.message";
+  private static final String BAD_ARGUMENT_KEY = "error.badargument.message";
+  private static final String MISSING_ARGUMENT_KEY = "error.missingargument.message";
+  private static final String MISSING_OPTIONS_BUNDLE_KEY = "res.error.options.message";
+  
+  
 
   private static final String HELP_OPTION_KEY = "help.option";
   private static final String LENGTH_OPTION_KEY = "length.option";
@@ -55,83 +73,167 @@ public class Options {
     }
    
     try {
-      ResourceBundle bundle = ResourceBundle.getBundle(OPTIONS_DESCRIPTION_BUNDLE);
+      opts = buildOptions();
 
-      Option helpOption = Option.builder("?").longOpt("help").hasArg(false)
-          .desc(bundle.getString(HELP_OPTION_KEY)).build();
-
-      Option lengthOption =
-          Option.builder("L").argName("length").hasArg().desc(bundle.getString(LENGTH_OPTION_KEY))
-              .longOpt("length").numberOfArgs(1).type(Number.class).build();
-      Option delimiterOption = Option.builder("d").argName("delimiter").hasArg()
-          .desc(bundle.getString(DELIMITER_OPTION_KEY)).longOpt("delimiter").numberOfArgs(1)
-          .optionalArg(true).type(String.class).build();
-      Option wordListOption = Option.builder("w").argName("path-to-list-file").hasArg()
-          .desc(bundle.getString(WORDLIST_OPTION_KEY)).longOpt("word-list").numberOfArgs(1)
-          .type(String.class).build();
-      Option modeOption = Option.builder("m").longOpt("password-mode").hasArg(false)
-          .desc(bundle.getString(MODE_OPTION_KEY)).build();
-
-      Option excludeUpperOption = Option.builder("b").longOpt("exclude-upper").hasArg(false)
-          .desc(bundle.getString(UPPER_OPTION_KEY)).build();
-      Option excludeLowerOption = Option.builder("s").longOpt("exclude-lower").hasArg(false)
-          .desc(bundle.getString(LOWER_OPTION_KEY)).build();
-      Option excludeDigitsOption = Option.builder("n").longOpt("exclude-digits").hasArg(false)
-          .desc(bundle.getString(DIGITS_OPTION_KEY)).build();
-      Option excludePunctuationOption = Option.builder("p").longOpt("exclude-punctuation")
-          .hasArg(false).desc(bundle.getString(PUNCTUATION_OPTION_KEY)).build();
-      Option includeAmbiguousOption = Option.builder("a").longOpt("include-ambiguous").hasArg(false)
-          .desc(bundle.getString(AMBIGUOUS_OPTION_KEY)).build();
-
-      org.apache.commons.cli.Options opts1 = new org.apache.commons.cli.Options()
-          .addOption(lengthOption).addOption(helpOption).addOption(delimiterOption)
-          .addOption(wordListOption).addOption(modeOption).addOption(excludeUpperOption)
-          .addOption(excludeLowerOption).addOption(excludeDigitsOption)
-          .addOption(excludePunctuationOption).addOption(includeAmbiguousOption);
-
-      DefaultParser parser = new DefaultParser();
-      HashMap<String, Object> map = new HashMap<>();
-      CommandLine cmdLine = parser.parse(opts1, args);
-      for (Option option : cmdLine.getOptions()) {
-        String opt = option.getOpt();
-        map.put(opt, cmdLine.getParsedOptionValue(opt));
-        // TODO perform additional validation on option values, including checking for extreme
-        // values.
-        // TODO check for option conflicts.
-
+      HashMap<String, Object> map = parseCommandLine(args, opts);
+      if (map != null) {
+        validateCommandLine (map, messageBundle);
+        
       }
-      if (cmdLine.hasOption("help")) {
-        display(null, usageMessage, opts1);
-        // resources
-      }
+//      int length = ((Number) map.get("L")).intValue();
+//      if (cmdLine.hasOption("m")) {
+//        if (length < 5) {
+//          
+//        }
+//      }
       return map;
-
     } catch (MissingArgumentException ex) {
       Option missing = ex.getOption();
       String optName = missing.getOpt();
-      String message = messageBundle.getString(MISSING_ARGUMENT_KEY);
+       displayError(messageBundle, MISSING_ARGUMENT_KEY, opts, optName);
+      return null;
+    } catch (UnrecognizedOptionException ex) {
+      String optName = ex.getOption();
+      displayError(messageBundle, BAD_OPTION_KEY, opts, optName);
+      String message = messageBundle.getString(BAD_OPTION_KEY);
       message = String.format(message, optName);
       display (message, usageMessage, opts);
       return null;
-    } catch (UnrecognizedOptionException ex) {
-      // TODO display error and usage.
-      return null;
     } catch (ParseException ex) {
-      // TODO display error and usage.
-      return null; // TODO Handle this exception with a usage display.
+       displayError(messageBundle, BAD_ARGUMENT_KEY, opts, ex.getLocalizedMessage());
+      return null; 
     } catch (MissingResourceException ex) {
-      // TODO Display error message like "Incomplete Installation"
+      displayError (messageBundle, MISSING_OPTIONS_BUNDLE_KEY, opts, OPTIONS_DESCRIPTION_BUNDLE);
       return null;
-
+    } catch (IllegalArgumentException ex){
+      displayError (messageBundle, LENGTH_ERROR, opts, null);
+      return null;
     }
    
+  }
+  
+  private static void validateCommandLine(HashMap<String, Object>map, ResourceBundle messageBundle) {
+    if (map.containsKey("m")) {
+      for (Map.Entry<String, Object> entry : map.entrySet()) {
+        switch (entry.getKey()) {
+          case "L" :
+            int length = ((Number) entry.getValue()).intValue();
+            if (length <= 0) {
+              throw new NegativeArraySizeException();
+            }
+            break;
+          case"a" :
+            break;
+          case "d" :
+          case "w" :
+            break;
+          case "b":
+          case "s" :
+          case "n" :
+          case "p" :
+            default :
+              
+        }
+      }
+    } else {
+      for (Map.Entry<String, Object> entry : map.entrySet()) {
+        switch (entry.getKey()) {
+          case "L" :
+            int length = ((Number) entry.getValue()).intValue();
+            if (length <= 0) {
+              throw new NegativeArraySizeException();
+            }
+            break;
+          case "d" :
+            String delimiter = (String) entry.getValue();
+            if (delimiter.matches(INVAILD_DELIMITERS)) {
+              throw new IllegalArgumentException();
+            }
+            break;
+          case "w" :
+            break;
+          case "b" :
+          case "s" :
+          case "n" :
+          case "p" :
+          case "a" :
+            break;
+        }
+      }
+    }
+  }
+
+  private static HashMap<String, Object> parseCommandLine(String[] args,
+      org.apache.commons.cli.Options opts) throws ParseException {
+    DefaultParser parser = new DefaultParser();
+    HashMap<String, Object> map = new HashMap<>();
+    CommandLine cmdLine = parser.parse(opts, args);
+    if (cmdLine.hasOption("help")){
+      display (null, usageMessage, opts);
+      return null;
+    }
+    
+    for (Option option : cmdLine.getOptions()) {
+      String opt = option.getOpt();
+      map.put(opt, cmdLine.getParsedOptionValue(opt));
+
+    }
+    return map;
+  }
+
+  private static org.apache.commons.cli.Options buildOptions() 
+    throws MissingResourceException {
+    ResourceBundle bundle = ResourceBundle.getBundle(OPTIONS_DESCRIPTION_BUNDLE);
+
+    Option helpOption = Option.builder("?").longOpt("help").hasArg(false)
+        .desc(bundle.getString(HELP_OPTION_KEY)).build();
+
+    Option lengthOption =
+        Option.builder("L").argName("length").hasArg().desc(bundle.getString(LENGTH_OPTION_KEY))
+            .longOpt("length").numberOfArgs(1).type(Number.class).build();
+    Option delimiterOption = Option.builder("d").argName("delimiter").hasArg()
+        .desc(bundle.getString(DELIMITER_OPTION_KEY)).longOpt("delimiter").numberOfArgs(1)
+        .optionalArg(true).type(String.class).build();
+    Option wordListOption = Option.builder("w").argName("path-to-list-file").hasArg()
+        .desc(bundle.getString(WORDLIST_OPTION_KEY)).longOpt("word-list").numberOfArgs(1)
+        .type(String.class).build();
+    Option modeOption = Option.builder("m").longOpt("password-mode").hasArg(false)
+        .desc(bundle.getString(MODE_OPTION_KEY)).build();
+
+    Option excludeUpperOption = Option.builder("b").longOpt("exclude-upper").hasArg(false)
+        .desc(bundle.getString(UPPER_OPTION_KEY)).build();
+    Option excludeLowerOption = Option.builder("s").longOpt("exclude-lower").hasArg(false)
+        .desc(bundle.getString(LOWER_OPTION_KEY)).build();
+    Option excludeDigitsOption = Option.builder("n").longOpt("exclude-digits").hasArg(false)
+        .desc(bundle.getString(DIGITS_OPTION_KEY)).build();
+    Option excludePunctuationOption = Option.builder("p").longOpt("exclude-punctuation")
+        .hasArg(false).desc(bundle.getString(PUNCTUATION_OPTION_KEY)).build();
+    Option includeAmbiguousOption = Option.builder("a").longOpt("include-ambiguous").hasArg(false)
+        .desc(bundle.getString(AMBIGUOUS_OPTION_KEY)).build();
+
+    org.apache.commons.cli.Options opts1 = new org.apache.commons.cli.Options()
+        .addOption(lengthOption).addOption(helpOption).addOption(delimiterOption)
+        .addOption(wordListOption).addOption(modeOption).addOption(excludeUpperOption)
+        .addOption(excludeLowerOption).addOption(excludeDigitsOption)
+        .addOption(excludePunctuationOption).addOption(includeAmbiguousOption);
+    return opts1;
+  }
+
+  private static void displayError(ResourceBundle messageBundle, String  messageKey,
+      org.apache.commons.cli.Options opts, String optName) {
+    String message = messageBundle.getString(messageKey);
+    message = String.format(message, optName);
+    display (message, usageMessage, opts);
   }
   
   private static void display (String message, String usage, org.apache.commons.cli.Options opts) {
     if (message != null) {
       System.out.println(message);
     }
-    new HelpFormatter().printHelp(usage,  opts);
+    if (opts != null) {
+      new HelpFormatter().printHelp(usage,  opts);
+      
+    }
   }
 
 }
