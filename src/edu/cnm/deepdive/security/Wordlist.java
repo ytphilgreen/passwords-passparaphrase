@@ -67,7 +67,8 @@ public class Wordlist {
     }
   }
 
-  private static String[] loadWordList(String listPath) throws IOException {
+  private static String[] loadWordList(String listPath)
+      throws IOException {
     try (BufferedReader reader = new BufferedReader(
         new InputStreamReader(Wordlist.class.getClassLoader().getResourceAsStream(listPath)))) {
       ArrayList<String> words = new ArrayList<>();
@@ -75,7 +76,6 @@ public class Wordlist {
         words.add(line.split("\\s+")[1]);
       }
       return words.toArray(new String[] {});
-
     }
   }
 

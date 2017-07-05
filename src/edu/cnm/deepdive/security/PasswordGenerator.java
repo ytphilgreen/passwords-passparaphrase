@@ -195,4 +195,9 @@ protected void setRng(Random rng) {
   this.rng = rng;
 }
 
+public void setNumberIncluded(boolean b) {
+  // TODO Auto-generated method stub
+  
+}
+
 }

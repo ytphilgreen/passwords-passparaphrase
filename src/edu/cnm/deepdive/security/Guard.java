@@ -5,6 +5,7 @@ package edu.cnm.deepdive.security;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -38,13 +39,59 @@ public class Guard {
   static String generateArtifact(HashMap<String, Object> map) {
     if(map.containsKey("m")) {
       PasswordGenerator gen = new SecurePasswordGenerator();
-      //TODO Set fields for all specified options. 
+      for (Map.Entry<String, Object> entry : map.entrySet()) {
+       switch (entry.getKey()) {
+         case "L" :
+          int length = ((Number) entry.getValue()).intValue();
+          gen.setMinLength(length);
+          gen.setMaxLength(length);
+          break;
+         case "a" :
+           gen.setAmbiguousExclude(false);
+           break;
+         case "b" :
+           gen.setUpperCaseInclude (false);
+           break;
+         case "s" :
+           gen.setLowerCaseInclude (false);
+           break;
+         case "n":
+           gen.setNumberIncluded(false);
+           break;
+         case "p":
+           gen.setNumbersInclude(false);
+           break;
+           default:
+             break;
+       }
+      }
+      //TODO set field for all specified options. 
       return gen.generate();
-    }
-    return null; 
-    
+    } else {
+      PassphraseGenerator gen = new PassphraseGenerator();
+      for (Map.Entry<String,Object> entry : map.entrySet()) {
+        switch (entry.getKey()) {
+          case "L":
+          int Length = ((Number) entry.getValue()).intValue();
+          gen.setLength (Length);
+          break;
+          case "d":
+            String delimiter = (String) entry.getValue();
+            gen.setDelimiter(delimiter);
+          case "w":
+            String wordListFile = (String) entry.getValue();
+            gen.setWordList(wordListFile);
+            break;
+            default:
+              break;
+              
+        }
+      }
+      return gen.generate();
+    } 
   }
   static void emitArtifact(String artifact) {
+    //TODO make this smarter may check for a verbose option.
     System.out.println(artifact);
     
   }
