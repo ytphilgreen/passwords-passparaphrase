@@ -86,8 +86,7 @@ public class Options {
 
       HashMap<String, Object> map = parseCommandLine(args, opts);
       if (map != null) {
-        validateCommandLine (map, messageBundle);
-        
+        validateCommandLine (map, messageBundle);       
       }
 //      int length = ((Number) map.get("L")).intValue();
 //      if (cmdLine.hasOption("m")) {
@@ -205,7 +204,6 @@ public class Options {
     for (Option option : cmdLine.getOptions()) {
       String opt = option.getOpt();
       map.put(opt, cmdLine.getParsedOptionValue(opt));
-
     }
     return map;
   }

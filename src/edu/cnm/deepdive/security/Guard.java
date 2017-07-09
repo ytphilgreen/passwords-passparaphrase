@@ -56,10 +56,10 @@ public class Guard {
            gen.setLowerCaseInclude (false);
            break;
          case "n":
-           gen.setNumberIncluded(false);
+           gen.setNumbersInclude(false);
            break;
          case "p":
-           gen.setNumbersInclude(false);
+           gen.setPunctuationInclude(false);
            break;
            default:
              break;
@@ -78,13 +78,13 @@ public class Guard {
           case "d":
             String delimiter = (String) entry.getValue();
             gen.setDelimiter(delimiter);
+            break;
           case "w":
             String wordListFile = (String) entry.getValue();
             gen.setWordList(wordListFile);
             break;
             default:
-              break;
-              
+              break;             
         }
       }
       return gen.generate();

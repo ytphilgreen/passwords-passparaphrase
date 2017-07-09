@@ -25,13 +25,13 @@ public class PassphraseGenerator {
   private Random rng = null;
   private ArrayList<String> pool = null;
   /**
-   * 
+   * calling the super class
    */
   public PassphraseGenerator() {
     super();
   }
   /**
-   * 
+   * gathering the word list from the bundle in the resource bundle, so it can be based on location.
    */
   protected void setupPool() {
     ResourceBundle bundle = ResourceBundle.getBundle(wordList);
@@ -44,13 +44,13 @@ public class PassphraseGenerator {
     }
   }
   /**
-   * 
+   * calling the secure random password and passphrase generation
    */
   protected void setupRng(){
     rng = new SecureRandom();
   }
   /**
-   * 
+   * using the string builder to set our pool of words, numbers and charters for the use of password/passphrase
    * @return
    */
   public String generate() {
@@ -61,59 +61,66 @@ public class PassphraseGenerator {
       setupRng();
     }
     StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < length; i++) {
-      String word = pool.get(rng.nextInt(pool.size()));
-      builder.append(word);
-      builder.append(delimiter);
-      
+    String word = pool.get(rng.nextInt(pool.size()));
+    builder.append(word);
+    for (int i = 0; i < length - 1; i++) {
+      word = pool.get(rng.nextInt(pool.size()));
+      builder.append(delimiter + word);
     }
-    return builder.toString().trim();
-    
+    return builder.toString().trim();   
   }
+  
   /**
    * @return the wordList
    */
   public String getWordList() {
     return wordList;
   }
+  
   /**
    * @param wordList the wordList to set
    */
   public void setWordList(String wordList) {
     this.wordList = wordList;
   }
+  
   /**
    * @return the delimiter
    */
   public String getDelimiter() {
     return delimiter;
   }
+  
   /**
    * @param delimiter the delimiter to set
    */
   public void setDelimiter(String delimiter) {
     this.delimiter = delimiter;
   }
+  
   /**
    * @return the length
    */
   public int getLength() {
     return length;
   }
+  
   /**
    * @param length the length to set
    */
   public void setLength(int length) {
     this.length = length;
   }
+  
   /**
-   * @return the rng
+   * @return the random list
    */
   protected Random getRng() {
     return rng;
   }
+  
   /**
-   * @param rng the rng to set
+   * @param random the random to set
    */
   protected void setRng(Random rng) {
     this.rng = rng;

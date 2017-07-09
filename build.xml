@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="password-passphrase" default="build" >
+
+    <property name="source.dir" location="./src" />
+    <property name="class.dir"  location="./bin" />
+    <property name="javadoc.dir" location="./doc" />
+    <property name="dist.dir" location="./dist" />
+    <property name="dist.jar" value="gaurd.jar" />
+    <property name="cli.lib.dir" location="../../libraries/commons-cli-1.4" />
+    <property name="cli.lib.jar" value="commons-cli-1.4.jar" />
+    <property name="cli.lib" location="${cli.lib.dir}/${cli.lib.jar}" />
+    
+    <target name="build" depends="compile, javadoc, jar" />
+	
+	<target name="clean" depends="-delete.dirs" />
+    
+	<target name="compile" depends="-create.class.dir">
+	    <javac
+	         srcdir="${source.dir}"
+	         destdir="${class.dir}"
+	         classpath="${cli.lib}" /> 
+    </target> 
+	
+	<target name="javadoc" depends="-create.javadoc.dir">
+		<javadoc 
+		sourcepath="${source.dir}"
+		destdir="${javadoc.dir}"
+		classpath="${cli.lib}" />
+		</target>
+	<target name="jar" depends="-create.dist.dir">
+	<jar destfile="${dist.dir}/${dist.jar}">
+		<fileset dir="${class.dir}">
+		<include name="**/*.class" />
+		     </fileset>
+		<fileset dir="${source.dir}">
+		   <include name="resources/**/*.properties" />
+		</fileset>
+		<manifest>
+			<attribute name="Main-Class" value="edu.cnm.deepdive.security.Guard" />
+			<attribute name= "Class-path" value=". lib/${cli.lib.jar}" />
+		</manifest>
+	</jar>
+		</target>
+	
+    <target name="-create.class.dir">
+    <mkdir dir="${class.dir}" />
+    </target>
+    
+    <target name="-create.javadoc.dir">
+    <mkdir dir="${javadoc.dir}" />
+    </target>
+    
+    <target name="-create.dist.dir">
+    <mkdir dir="${dist.dir}" />
+    </target>   
+ <target name= "-delete.dirs">
+ 	<delete dir= "${class.dir}" />
+ 	<delete dir= "${javadoc.dir}" />
+ 	<delete dir= "${dist.dir}" />
+ 	</target>
+ 	
+	
+</project>
