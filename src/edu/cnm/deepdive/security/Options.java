@@ -19,7 +19,10 @@ import org.apache.commons.cli.UnrecognizedOptionException;
 
 /**
  * @author Yolanda Philgreen
+ * @version 1.3
  *
+ * Use of constants and bundles in this method for the use in giving user end options of the password and the
+ * passphrase. The end user will encounter warnings and error messages with implementation.
  */
 public class Options {
   
@@ -71,7 +74,10 @@ public class Options {
   private static final String AMBIGUOUS_OPTION_KEY = "include-ambiguous.option";
   private static String usageMessage = String.format("java -jar %s [options]", JAR_FILE_NAME);
   
-  
+  /*
+   * @exception this try loop catches the missing resource bundle and will give a fatal message if the message
+   * bundle from the commons isn't found. this fatal message will return to user.
+   */
   static HashMap<String, Object> getOptions(String[] args) {
     org.apache.commons.cli.Options opts = null;
     ResourceBundle messageBundle = null;   

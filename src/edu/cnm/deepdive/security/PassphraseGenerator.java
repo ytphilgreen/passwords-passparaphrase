@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 /**
  * @author Yolanda Philgreen
  *
+ * @version 1.1
  */
 public class PassphraseGenerator {
 
@@ -32,6 +33,7 @@ public class PassphraseGenerator {
   }
   /**
    * gathering the word list from the bundle in the resource bundle, so it can be based on location.
+   *  key words used  based on Enum
    */
   protected void setupPool() {
     ResourceBundle bundle = ResourceBundle.getBundle(wordList);
@@ -51,7 +53,7 @@ public class PassphraseGenerator {
   }
   /**
    * using the string builder to set our pool of words, numbers and charters for the use of password/passphrase
-   * @return
+   * @return a trimmed string of words for the passphrase
    */
   public String generate() {
     if (pool == null){

@@ -3,11 +3,8 @@
  */
 package edu.cnm.deepdive.security;
 
-
 import java.util.HashMap;
 import java.util.Map;
-
-
 
 /**
  * A program that generates random passwords and passphrases.
@@ -17,6 +14,7 @@ import java.util.Map;
  * 
  * @author Yolanda Philgreen
  *
+ * @version 1.2
  */
 public class Guard {
 
@@ -65,7 +63,10 @@ public class Guard {
              break;
        }
       }
-      //TODO set field for all specified options. 
+      /**
+       * 
+       * returns the map to items in use of the generator. 
+       */
       return gen.generate();
     } else {
       PassphraseGenerator gen = new PassphraseGenerator();
@@ -90,6 +91,10 @@ public class Guard {
       return gen.generate();
     } 
   }
+  /**
+   * 
+   * @param artifact current string array for the artifact. May be changed or upgraded in future.
+   */
   static void emitArtifact(String artifact) {
     //TODO make this smarter may check for a verbose option.
     System.out.println(artifact);

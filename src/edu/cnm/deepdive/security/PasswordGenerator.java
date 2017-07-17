@@ -13,8 +13,6 @@ import java.util.Random;
  * @author Yolanda Philgreen
  * @version 1.0
  */
-
-
 public class PasswordGenerator {
 
   private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -34,16 +32,8 @@ public class PasswordGenerator {
   private boolean punctuationInclude = true;
   private boolean ambiguousExclude = true;
   private String delimiter = "";
-  // TODO warnings that will be added are options in conflict password done and the delimeter and
-  // word list.
-  // TODO warnings extreme value, high length
-  // TODO set length min and max to length option value set character set fields from options same
-  // with ambiguous.
-  // TODO do we set a warning on things line an unknown option we can throw a warning and then let
-  // them do it.
-
+ 
   public PasswordGenerator() {}
-
   /**
    * maximum length of the password is selected.
    * 

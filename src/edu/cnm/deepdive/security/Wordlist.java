@@ -12,6 +12,7 @@ import java.util.Random;
  * Wordlist set for passpharse and passwords.
  * @author Yolanda Philgreen
  *
+ * @version 1.5
  */
 public class Wordlist {
 
@@ -26,7 +27,7 @@ public class Wordlist {
 
   /**
    * command line to open wordlist using random and phrase specific details.
-   * @param args 
+   * @param args sets length format
    * 
    */
   public static void main(String[] args) {

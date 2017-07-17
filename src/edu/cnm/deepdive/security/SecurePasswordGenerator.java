@@ -6,6 +6,7 @@ import java.security.SecureRandom;
  * Interface of the cryprographic secure password
  * @author Yolanda Philgreeen
  *
+ *@version 1.4
  */
 public class SecurePasswordGenerator extends PasswordGenerator {
 /**
