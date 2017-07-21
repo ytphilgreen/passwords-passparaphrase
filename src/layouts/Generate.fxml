@@ -1,15 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.CheckBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"
 	alignment= "center"
 	spacing= "10"
 	
 	>
-	<Text text="%header"/>
+	<Text id="header" text="%header"/>
 	
+	<TabPane>
+
+	
+	<Tab 			
+				text="%password.tab.name" 
+				closable="false">
+	<VBox
+	
+	id="password-options"
+	fx:id="passwordOptions"
+	alignment="center"
+	spacing="10"
+	visible="true">
+	
+	
+	<CheckBox text="%include.upper.label" fx:id="upperIncluded" id="upper-included"/>
+	<CheckBox text="%include.lower.label" fx:id="lowerIncluded" id="lower-included"/>
+	<CheckBox text="%include.punctuation.label" fx:id="punctuationIncluded" id="punctuationIncluded"/>
+	<CheckBox text="%exclude.ambiguous.label" fx:id="ambiguousExcluded" id="ambiguousExcluded"/>
+
+</VBox>
+	</Tab>
+	
+	<Tab 			
+				text="%passphrase.tab.name" 
+				closable="false">
+	<VBox
+		id="passphrase-options"
+		fx:id="passphraseOptions"
+		alignment="center"
+		spacing="10">
+		
+		
+		</VBox>
+	</Tab>
+	
+	
+	</TabPane>
 	
 </VBox>
 
