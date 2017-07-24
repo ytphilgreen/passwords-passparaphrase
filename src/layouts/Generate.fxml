@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.* ?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.text.Text?>
@@ -11,140 +12,131 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.collections.FXCollections?>
 
 
-<VBox xmlns:fx="http://javafx.com/fxml/1"
-fx:controller= "edu.cnm.deepdive.security.ui.Controller"
-	alignment= "top_center"
-	spacing= "10">
-	
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cnm.deepdive.security.ui.Controller"
+	alignment="top_center" spacing="10">
+
 	<padding>
-	
-	<Insets 
-	  top="10"
-	  right="0"
-	  left="0"
-	  bottom="10" />
-	  
+
+		<Insets top="10" right="0" left="0" bottom="10" />
+
 	</padding>
-	
-	
-	<Text id="header" text="%header"/>
-	
+
+
+	<Text id="header" text="%header" />
+
 	<TabPane tabClosingPolicy="unavailable">
 
-	<Tab text="%password.tab.name" >
+		<Tab text="%password.tab.name">
+
+			<VBox id="password-options" alignment="center_left" fillWidth="true"
+				spacing="15">
+
+				<padding>
+
+					<Insets top="20" right="20" left="20" bottom="20" />
+
+				</padding>
+
+				<CheckBox fx:id="upperIncluded" id="upper-included" text="%include.upper.label"
+					onAction="#checkPasswordOptions" />
+
+				<CheckBox fx:id="lowerIncluded" id="lower-included" text="%include.lower.label"
+					onAction="#checkPasswordOptions" />
+
+				<CheckBox text="%include.punctuation.label" fx:id="punctuationIncluded"
+					id="punctuation-included" onAction="#checkPasswordOptions" />
+
+				<CheckBox text="%exclude.ambiguous.label" fx:id="ambiguousExcluded"
+					id="ambiguous-excluded" onAction="#checkPasswordOptions" />
+
+				<CheckBox fx:id="digitsIncluded" id="digits-included" text="%include.digits.label"
+					onAction="#checkPasswordOptions" />
+
+				<Label fx:id="passwordLengthLabel" id="password-length-label"
+					text="%password.length.label" mnemonicParsing="true" />
+
+				<Slider fx:id="passwordLength" id="password-length" min="8"
+					max="24" majorTickUnit="4" minorTickCount="3" blockIncrement="1"
+					showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+
+				<HBox alignment="center" spacing="10">
+					<Button fx:id="generatePassword" id="generate-password"
+						text="%generate.password.label" onAction="#generatePassword" />
+
+					<TextField fx:id="password" id="password" editable="false"
+						prefColumnCount="18" />
+
+
+				</HBox>
+
+			</VBox>
+
+		</Tab>
+
+		<Tab text="%passphrase.tab.name">
+			<VBox id="passphrase-options" alignment="center_left" fillWidth="true"
+				spacing="15">
+
+				<padding>
+
+					<Insets top="20" right="20" left="20" bottom="20" />
+
+				</padding>
 				
-	<VBox
-	
-	id="password-options"
-	alignment="center_left"
-	fillWidth="true"
-	spacing="15">
+				<HBox
+				  alignment="top_left">
+				  
+				  <Label 
+				    fx:id="delimiterLabel"
+				    id="delimiter-label"
+				    text="%delimiter.label"
+				    mnemonicParsing="true" />
+				    
+				    <ChoiceBox 
+				      fx:id="delimiter"
+				      id="delimiter"
+				      value=" " >
+				      <items>
+				      
+				      <FXCollections fx:factory="observableArrayList">
+				      
+				      <String fx:value=" "/>
+				      <String fx:value="*"/>
+				      <String fx:value="-"/>
+				      
+				      </FXCollections>
+				      
+				      </items>
+				      
+				      </ChoiceBox>
+				
+				</HBox>
+				<Label fx:id="passphraseLengthLabel" id="passphrase-length-label"
+					text="%passphrase.length.label" mnemonicParsing="true" />
 
-	<padding>
-	
-		<Insets 
-		 top="20"
-		 right="20"
-		 left="20"
-		 bottom="20" />
-		 
-	</padding>
-	
-	<CheckBox 
-	 fx:id="upperIncluded"
-	 id="upper-included"
-	 text="%include.upper.label"
-	 onAction="#checkPasswordOptions"/>
-	 
-	<CheckBox
-	 fx:id="lowerIncluded" 
-	 id="lower-included"
-	 text="%include.lower.label"
-	 onAction="#checkPasswordOptions" />
-	 
-	<CheckBox
-	 text="%include.punctuation.label" 
-	 fx:id="punctuationIncluded" 
-	 id="punctuation-included"
-	 onAction="#checkPasswordOptions"/>
-	 
-	<CheckBox 
-	text="%exclude.ambiguous.label" 
-	fx:id="ambiguousExcluded" 
-	id="ambiguous-excluded"
-	onAction="#checkPasswordOptions"/>
-	
-	<CheckBox 
-	fx:id="digitsIncluded" 
-	id="digits-included" 
-	text="%include.digits.label" 
-	onAction="#checkPasswordOptions"/>
-	
-	<Label
-	 fx:id="passwordLengthLabel"
-	  id="password-length-label" 
-	  text="%password.length.label" 
-	  mnemonicParsing="true"/>
-	  
-	<Slider 
-	fx:id="passwordLength"
-	id="password-length"
-	min="8"
-	max="24" 
-	majorTickUnit="4" 
-	minorTickCount="3" 
-	blockIncrement="1" 
-	showTickLabels="true" 
-	showTickMarks="true" 
-	snapToTicks="true"/>
-	
-	<HBox 
-	    alignment="center"
-	    spacing="10">
-	<Button 
-	    fx:id="generatePassword"
-	    id="generate-password"
-	    text="%generate.password.label"
-	    onAction="#generatePassword" />
-	    
-	    <TextField 
-	       fx:id="password"
-	       id="password"
-	       editable="false"
-	       prefColumnCount="18" />
-	       
-	    
-	    </HBox>
+				<Slider fx:id="passphraseLength" id="passphrase-length" min="4"
+					max="8" majorTickUnit="2" minorTickCount="1" blockIncrement="1"
+					showTickLabels="true" showTickMarks="true" snapToTicks="true" />
 
-</VBox>
+				<HBox alignment="center" spacing="10">
+					<Button fx:id="generatePassphrase" id="generate-passphrase"
+						text="%generate.passphrase.label" onAction="#generatePassphrase" />
 
-	</Tab>
-	
-	<Tab text="%passphrase.tab.name">
-	
-	
-	<VBox
-		id="passphrase-options"
-		alignment="center"
-		spacing="10">
-		
-		
-		  <padding>
-		  
-		  <Insets
-		       top="20"
-		       right="20"
-		       left="20"
-		       bottom="20" />
-		  
-		           </padding>
-		
-		        </VBox>
-	      </Tab>
-	
-	 </TabPane>
-	
+					<TextField fx:id="passphrase" id="passphrase" editable="false"
+						prefColumnCount="18" />
+
+
+				</HBox>
+
+			</VBox>
+
+		</Tab>
+
+	</TabPane>
+
 </VBox>
 

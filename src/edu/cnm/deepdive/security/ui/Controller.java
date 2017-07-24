@@ -4,13 +4,16 @@
 package edu.cnm.deepdive.security.ui;
 
 import edu.cnm.deepdive.security.core.SecurePasswordGenerator;
+import edu.cnm.deepdive.security.core.PassphraseGenerator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
 
 /**
  * @author Yolanda Philgreen
@@ -19,7 +22,7 @@ import javafx.scene.layout.VBox;
 public class Controller {
 
   private SecurePasswordGenerator passwordGenerator = new SecurePasswordGenerator();
-  
+  private PassphraseGenerator passphraseGenerator = new PassphraseGenerator();
   @FXML
   private CheckBox passwordOptions;
   @FXML
@@ -42,6 +45,21 @@ public class Controller {
   private Button generatePassword;
   @FXML
   private TextField password;
+  @FXML
+  private Label passphraseLengthLabel;
+  @FXML
+  private Slider passphraseLength;
+  @FXML
+  private TextField passphrase;
+  @FXML
+  private Button generatePassphrase;
+  @FXML
+  private Label delimiterLabel;
+  @FXML
+  private ChoiceBox<String> delimiter;
+  
+  
+  
   
  @FXML 
   private void initialize() {
@@ -53,6 +71,9 @@ public class Controller {
     passwordLengthLabel.setLabelFor(passwordLength);
     passwordLength.setValue(passwordGenerator.getMinLength());
     checkPasswordOptions();
+    passphraseLengthLabel.setLabelFor(passphraseLength);
+    passphraseLength.setValue(passphraseGenerator.getLength());
+    delimiterLabel.setLabelFor(delimiter);
     
   }
   
@@ -63,6 +84,7 @@ public class Controller {
         && !digitsIncluded.isSelected()
         && !punctuationIncluded.isSelected());
   }
+ 
   
   @FXML
   private void generatePassword() {
@@ -80,5 +102,12 @@ public class Controller {
       passwordGenerator.setMaxLength((int) Math.round(passwordLength.getValue()));
         }
     password.setText(passwordGenerator.generate());
+      }
+  @FXML
+  private void generatePassphrase() {
+    int length = (int) Math.round(passphraseLength.getValue());
+   passphraseGenerator.setLength(length);
+    passphraseGenerator.setDelimiter(delimiter.getValue());
+    passphrase.setText(passphraseGenerator.generate());
       }
 }
