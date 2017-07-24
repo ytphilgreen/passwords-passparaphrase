@@ -3,7 +3,7 @@
  * 
  */
 
-package edu.cnm.deepdive.security;
+package edu.cnm.deepdive.security.core;
 
 import java.util.Random;
 
@@ -47,7 +47,7 @@ public class PasswordGenerator {
    * 
    * @param maxLength max length of the password is selected.
    */
-  protected void setMaxLength(int maxLength) {
+  public void setMaxLength(int maxLength) {
     this.maxLength = maxLength;
   }
 
@@ -59,19 +59,23 @@ public class PasswordGenerator {
   }
 
   /**
-   * @param minLength the minimum Length of password selected.
+   * @param minLength the minimum Length of password selected. pool of characters based on the inclusion/exclusion flags.
    */
-  protected void setMinLength(int minLength) {
+  public void setMinLength(int minLength) {
     this.minLength = minLength;
   }
 
   private void setupPool() {
-    if (pool == null) {
+
       StringBuilder builder = new StringBuilder();
       if (isLowerCaseInclude()) {
         builder.append(LOWERCASE);
       }
       if (isUpperCaseInclude()) {
+        builder.append(UPPERCASE);
+      }
+      
+      if (isNumbersInclude()) {
         builder.append(NUMBERS);
       }
       if (isPunctuationInclude()) {
@@ -82,7 +86,7 @@ public class PasswordGenerator {
         work.replaceAll(AMBIGUOUS, "");
       }
       pool = work.toCharArray();
-    }
+    
   }
 
   /**

@@ -9,6 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"
 fx:controller= "edu.cnm.deepdive.security.ui.Controller"
@@ -35,7 +38,6 @@ fx:controller= "edu.cnm.deepdive.security.ui.Controller"
 	<VBox
 	
 	id="password-options"
-	fx:id="passwordOptions"
 	alignment="center_left"
 	fillWidth="true"
 	spacing="15">
@@ -60,34 +62,34 @@ fx:controller= "edu.cnm.deepdive.security.ui.Controller"
 	 fx:id="lowerIncluded" 
 	 id="lower-included"
 	 text="%include.lower.label"
-	 onAction=#checkPasswordOptions" />
+	 onAction="#checkPasswordOptions" />
 	 
 	<CheckBox
 	 text="%include.punctuation.label" 
 	 fx:id="punctuationIncluded" 
-	 id="punctuationIncluded"
+	 id="punctuation-included"
 	 onAction="#checkPasswordOptions"/>
 	 
 	<CheckBox 
 	text="%exclude.ambiguous.label" 
 	fx:id="ambiguousExcluded" 
-	id="ambiguousExcluded"
+	id="ambiguous-excluded"
 	onAction="#checkPasswordOptions"/>
 	
 	<CheckBox 
-	text="digitsIncluded" 
+	fx:id="digitsIncluded" 
 	id="digits-included" 
 	text="%include.digits.label" 
-	onAction="#checkPasswordOption"/>
+	onAction="#checkPasswordOptions"/>
 	
 	<Label
 	 fx:id="passwordLengthLabel"
 	  id="password-length-label" 
-	  text=%password.lenth.label" 
+	  text="%password.length.label" 
 	  mnemonicParsing="true"/>
 	  
 	<Slider 
-	fx:id="passwordLenth"
+	fx:id="passwordLength"
 	id="password-length"
 	min="8"
 	max="24" 
@@ -125,14 +127,13 @@ fx:controller= "edu.cnm.deepdive.security.ui.Controller"
 	
 	<VBox
 		id="passphrase-options"
-		fx:id="passphraseOptions"
 		alignment="center"
 		spacing="10">
 		
 		
 		  <padding>
 		  
-		  <Inserts
+		  <Insets
 		       top="20"
 		       right="20"
 		       left="20"
